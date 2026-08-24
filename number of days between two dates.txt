@@ -1,44 +1,7 @@
 class Solution {
-public:
-    int daysBetweenDates(string date1, string date2) {
-        auto leap = [](int year) {
-            return (year % 400 == 0) ||
-                   (year % 4 == 0 && year % 100 != 0);
-        };
-
-        auto days = [&](string date) {
-            int year = stoi(date.substr(0, 4));
-            int month = stoi(date.substr(5, 2));
-            int day = stoi(date.substr(8, 2));
-
-            int monthDays[] = {
-                31, 28, 31, 30, 31, 30,
-                31, 31, 30, 31, 30, 31
-            };
-
-            int total = 0;
-
-            // Days in previous years
-            for (int y = 1; y < year; y++) {
-                total += leap(y) ? 366 : 365;
-            }
-
-            // Days in previous months
-            for (int m = 1; m < month; m++) {
-                total += monthDays[m - 1];
-
-                if (m == 2 && leap(year))
-                    total++;
-            }
-
-            // Days in current month
-            total += day;
-
-            return total;
-        };
-
-        return abs(days(date1) - days(date2));
+    public int daysBetweenDates(String date1, String date2) {
+        java.time.LocalDate d1 = java.time.LocalDate.parse(date1);
+        java.time.LocalDate d2 = java.time.LocalDate.parse(date2);
+        return (int) Math.abs(java.time.temporal.ChronoUnit.DAYS.between(d1, d2));
     }
-};
-
-    
+}
